@@ -10,33 +10,18 @@
 <meta name="theme-color" content="#FFF9EF">
 <link rel="apple-touch-icon" href="/icons/icon-180.svg">
 <link rel="manifest" href="/manifest.json">
-<script>
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
-</script>
-<title>汐汐辅食日记 · 高保真原型</title>
+<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js');</script>
+<title>汐汐辅食日记</title>
 <style>
-:root{
-  --cream:#FFF9EF; --green:#D8E9D0; --orange:#FFE2C5;
-  --green-d:#B8D4A8; --orange-d:#F5C98E; --brown:#5A4A3A; --brown-2:#9A8A7A;
-  --line:#EFE6D6; --white:#FFFFFF; --red:#E89B8B;
-}
+:root{--cream:#FFF9EF;--green:#D8E9D0;--orange:#FFE2C5;--green-d:#B8D4A8;--orange-d:#F5C98E;--brown:#5A4A3A;--brown-2:#9A8A7A;--line:#EFE6D6;--white:#FFF;--red:#E89B8B}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:"PingFang SC","Microsoft YaHei","Helvetica Neue",sans-serif}
-body{background:#EDE7DC;display:flex;justify-content:center;align-items:flex-start;padding:32px 24px;min-height:100vh;color:var(--brown)}
-.stage{display:flex;gap:32px;flex-wrap:wrap;justify-content:center}
-.phone{width:340px;height:700px;background:var(--cream);border-radius:42px;box-shadow:0 20px 50px rgba(90,74,58,.18),0 0 0 9px #2b2b2b,0 0 0 11px #3a3a3a;overflow:hidden;position:relative;font-size:13px;margin-top:32px}
-.phone .screen{width:100%;height:100%;overflow-y:auto;position:relative;scrollbar-width:none}
-.screen::-webkit-scrollbar{display:none}
-.label{position:absolute;top:-26px;left:50%;transform:translateX(-50%);background:#5A4A3A;color:#fff;padding:5px 16px;border-radius:14px;font-size:12px;white-space:nowrap;z-index:10;letter-spacing:1px}
+html,body{width:100%;height:100%;overflow:hidden;background:#2b2b2b;display:flex;align-items:center;justify-content:center}
+.phone{width:100%;max-width:390px;height:100vh;max-height:844px;background:var(--cream);overflow:hidden;position:relative;font-size:13px;color:var(--brown);border-radius:0}
+.page{display:none;width:100%;height:100%;overflow-y:auto;position:relative;scrollbar-width:none}
+.page.active{display:block}
+.page::-webkit-scrollbar{display:none}
 .statusbar{height:34px;display:flex;align-items:center;justify-content:space-between;padding:8px 22px 0;font-size:11px;font-weight:600}
-.statusbar .icons{display:flex;gap:4px;align-items:center}
-.dot{width:4px;height:4px;border-radius:50%;background:var(--brown)}
-.tabbar{position:absolute;bottom:0;left:0;right:0;height:66px;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;align-items:center;padding-bottom:8px}
-.tab{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--brown-2);cursor:pointer}
-.tab.active{color:var(--brown);font-weight:600}
-.tab .ico{width:22px;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px}
-.tab.active .ico{background:var(--green)}
 .content{padding:0 18px 86px}
-h2.page-title{font-size:18px;font-weight:700;padding:6px 0 14px}
 .card{background:#fff;border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 4px 14px rgba(90,74,58,.06)}
 .section-t{font-size:12px;color:var(--brown-2);margin:14px 4px 8px;display:flex;justify-content:space-between;align-items:center}
 .pill{font-size:10px;padding:3px 10px;border-radius:10px;background:var(--green);color:var(--brown);font-weight:600}
@@ -48,7 +33,8 @@ h2.page-title{font-size:18px;font-weight:700;padding:6px 0 14px}
 .btn{display:block;width:100%;padding:13px;border:none;border-radius:14px;font-size:14px;font-weight:600;cursor:pointer;text-align:center}
 .btn-primary{background:var(--green-d);color:#fff}
 .btn-orange{background:var(--orange-d);color:#fff}
-.meal-card{background:#fff;border-radius:20px;padding:16px;margin-bottom:14px;position:relative;overflow:hidden;box-shadow:0 4px 14px rgba(90,74,58,.06)}
+.btn-outline{background:transparent;border:1.5px solid var(--green-d);color:var(--brown)}
+.meal-card{background:#fff;border-radius:20px;padding:16px;margin-bottom:14px;position:relative;overflow:hidden;box-shadow:0 4px 14px rgba(90,74,58,.06);cursor:pointer}
 .meal-card::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:5px;border-radius:3px;background:var(--green-d)}
 .meal-card.fruit::before{background:var(--orange-d)}
 .meal-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;padding-left:8px}
@@ -57,23 +43,21 @@ h2.page-title{font-size:18px;font-weight:700;padding:6px 0 14px}
 .ing-row{display:flex;gap:6px;margin:10px 0 12px;padding-left:8px;flex-wrap:wrap}
 .ing{font-size:10px;background:var(--cream);padding:4px 9px;border-radius:8px;color:var(--brown)}
 .ing.warn{background:#FBE3DD;color:#b04030}
-.ing-row .emoji{font-size:18px}
 .status-btn{width:100%;padding:11px;border-radius:12px;font-size:13px;font-weight:600;text-align:center;border:none;cursor:pointer}
 .status-btn.cook{background:var(--green);color:#3a6a2a}
 .status-btn.done{background:var(--orange);color:#8a5a1a}
 .status-btn.pend{background:var(--cream);color:var(--brown)}
 .day-strip{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px;scrollbar-width:none}
 .day-strip::-webkit-scrollbar{display:none}
-.day-cell{min-width:42px;height:52px;border-radius:14px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;gap:2px;flex-shrink:0}
+.day-cell{min-width:42px;height:52px;border-radius:14px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;gap:2px;flex-shrink:0;cursor:pointer}
 .day-cell .d{font-size:13px;font-weight:700}
 .day-cell.cur{background:var(--green);color:#3a6a2a}
-.day-cell .pt{width:5px;height:5px;border-radius:50%;background:var(--orange-d)}
 .seg{display:flex;background:#fff;border-radius:14px;padding:4px;margin-bottom:12px}
 .seg .s{flex:1;text-align:center;padding:9px 0;border-radius:10px;font-size:12px;font-weight:600;color:var(--brown-2);cursor:pointer}
 .seg .s.on{background:var(--green);color:#3a6a2a}
-.steps{counter-reset:s;list-style:none}
+.steps{counter-reset:st;list-style:none}
 .steps li{position:relative;padding:0 0 14px 30px;font-size:13px;line-height:1.55}
-.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:0;width:22px;height:22px;border-radius:50%;background:var(--green);color:#3a6a2a;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.steps li::before{counter-increment:st;content:counter(st);position:absolute;left:0;top:0;width:22px;height:22px;border-radius:50%;background:var(--green);color:#3a6a2a;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
 .ing-list{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--line);font-size:13px}
 .ing-list:last-child{border:none}
 .ing-list .amt{color:var(--brown-2);font-size:12px}
@@ -88,18 +72,15 @@ h2.page-title{font-size:18px;font-weight:700;padding:6px 0 14px}
 .input{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:14px;font-size:14px;background:#fff;color:var(--brown);outline:none}
 .input:focus{border-color:var(--green-d)}
 .tag-row{display:flex;flex-wrap:wrap;gap:8px}
-.tag{padding:8px 14px;border-radius:12px;background:#fff;border:1.5px solid var(--line);font-size:12px;cursor:pointer}
+.tag{padding:8px 14px;border-radius:12px;background:#fff;border:1.5px solid var(--line);font-size:12px;cursor:pointer;user-select:none}
 .tag.on{background:var(--orange);border-color:var(--orange-d);color:#8a5a1a}
-.list-item{display:flex;justify-content:space-between;align-items:center;padding:15px 4px;border-bottom:1px solid var(--line);font-size:14px}
+.list-item{display:flex;justify-content:space-between;align-items:center;padding:15px 4px;border-bottom:1px solid var(--line);font-size:14px;cursor:pointer}
 .list-item:last-child{border:none}
 .list-item .arr{color:var(--brown-2)}
 .progress{height:4px;background:#eee;border-radius:2px;margin:10px 0}
 .progress .bar{height:100%;background:var(--green-d);border-radius:2px}
 .note{font-size:11px;color:var(--brown-2);line-height:1.5;padding:8px 10px;background:var(--cream);border-radius:10px;margin-top:8px}
 .tip{background:var(--green);padding:10px 12px;border-radius:12px;font-size:11px;color:#3a6a2a;line-height:1.5;margin-top:8px}
-.food-cell{aspect-ratio:1;background:#fff;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px;color:var(--brown);border:1.5px solid var(--line);cursor:pointer;padding:4px}
-.food-cell span:first-child{font-size:24px}
-.food-cell.on{background:var(--orange);border-color:var(--orange-d);color:#8a5a1a;font-weight:600}
 .hero{padding:18px;background:linear-gradient(135deg,var(--green) 0%,var(--cream) 100%);border-radius:0 0 24px 24px;margin-bottom:14px}
 .hero h1{font-size:20px;font-weight:700}
 .hero .sub{font-size:12px;color:var(--brown-2);margin-top:4px}
@@ -123,190 +104,190 @@ h2.page-title{font-size:18px;font-weight:700;padding:6px 0 14px}
 .stepbar{display:flex;gap:6px;margin-bottom:28px}
 .stepbar i{flex:1;height:4px;border-radius:2px;background:#eee}
 .stepbar i.on{background:var(--green-d)}
-.stepbar i.cur{background:var(--orange-d)}
-.nav-back{position:absolute;top:42px;left:18px;font-size:20px;cursor:pointer;z-index:5}
-.page-head{padding:40px 18px 12px;font-size:17px;font-weight:700}
+.nav-back{position:absolute;top:42px;left:18px;font-size:20px;cursor:pointer;z-index:5;width:32px;height:32px;display:flex;align-items:center}
+.page-head{padding:40px 18px 12px;font-size:17px;font-weight:700;text-align:center}
 .kpi{display:flex;gap:10px;margin-bottom:6px}
 .kpi .k{flex:1;background:#fff;border-radius:14px;padding:12px;text-align:center}
 .kpi .k b{font-size:18px;display:block}
 .kpi .k span{font-size:10px;color:var(--brown-2)}
+.tabbar{position:absolute;bottom:0;left:0;right:0;height:66px;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;align-items:center;padding-bottom:8px;z-index:10}
+.tab{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--brown-2);cursor:pointer}
+.tab.active{color:var(--brown);font-weight:600}
+.tab .ico{width:22px;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px}
+.tab.active .ico{background:var(--green)}
+.food-cell{aspect-ratio:1;background:#fff;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px;color:var(--brown);border:1.5px solid var(--line);cursor:pointer;padding:4px;user-select:none}
+.food-cell span:first-child{font-size:24px}
+.food-cell.on{background:var(--orange);border-color:var(--orange-d);color:#8a5a1a;font-weight:600}
 </style>
 </head>
 <body>
-<div class="stage">
+<div class="phone" id="app">
 
-<!-- 1. 启动页 -->
-<div class="phone">
-  <div class="label">① 启动页</div>
-  <div class="screen">
-    <div class="splash">
+  <!-- 启动页 -->
+  <div class="page active" id="p-splash">
+    <div class="splash" onclick="go('onboard1')">
       <div class="bowl">🥣</div>
       <div class="t1">汐汐辅食日记</div>
       <div class="t2">宝宝成长小助手</div>
       <div class="load"><i></i><i></i><i></i></div>
+      <div style="font-size:11px;color:var(--brown-2);margin-top:10px">点击进入</div>
     </div>
   </div>
-</div>
 
-<!-- 2. 首次引导 -->
-<div class="phone">
-  <div class="label">② 宝宝信息引导</div>
-  <div class="screen">
-    <div class="statusbar"><span>9:41</span><span class="icons"><i class="dot"></i><i class="dot"></i><i class="dot"></i></span></div>
+  <!-- 引导页1-昵称 -->
+  <div class="page" id="p-onboard1">
+    <div class="statusbar"><span>9:41</span><span>●●●</span></div>
     <div class="onboard">
-      <div class="stepbar"><i class="on"></i><i class="cur"></i><i></i></div>
+      <div class="stepbar"><i class="on"></i><i></i><i></i></div>
+      <h2>宝宝叫什么名字？</h2>
+      <p class="lead">默认昵称"汐汐"，你可以修改</p>
+      <input class="input" value="汐汐" id="babyName" style="font-size:18px;text-align:center;font-weight:700">
+      <div style="margin-top:30px">
+        <button class="btn btn-primary" onclick="go('onboard2')">下一步</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 引导页2-月龄 -->
+  <div class="page" id="p-onboard2">
+    <div class="statusbar"><span>9:41</span><span>●●●</span></div>
+    <div class="onboard">
+      <div class="stepbar"><i class="on"></i><i class="on"></i><i></i></div>
       <h2>宝宝多大了？</h2>
-      <p class="lead">月龄用于自动适配食谱的颗粒度与份量建议</p>
+      <p class="lead">月龄用于自动适配食谱颗粒度与份量</p>
       <div class="stepper">
-        <button>−</button>
-        <div><div class="val">10</div><div class="unit">个月</div></div>
-        <button>+</button>
+        <button onclick="chgMonth(-1)">−</button>
+        <div><div class="val" id="mVal">10</div><div class="unit">个月</div></div>
+        <button onclick="chgMonth(1)">+</button>
       </div>
-      <div class="note">💡 10~12 月龄：可吃软饭、碎面、蛋黄、鱼肉泥，建议每日2餐辅食+1水果</div>
-      <div style="margin-top:40px">
-        <button class="btn btn-primary">下一步</button>
-      </div>
-      <div style="display:flex;gap:6px;margin-top:12px;justify-content:center;font-size:12px;color:var(--brown-2)">
-        <span>①昵称</span><span>→</span><span style="color:var(--brown);font-weight:600">②月龄</span><span>→</span><span>③过敏黑名单</span>
+      <div class="note">💡 10~12 月龄：可吃软饭、碎面、蛋黄、鱼肉泥</div>
+      <div style="margin-top:30px">
+        <button class="btn btn-primary" onclick="go('onboard3')">下一步</button>
       </div>
     </div>
   </div>
-</div>
 
-<!-- 3. 过敏黑名单 -->
-<div class="phone">
-  <div class="label">③ 过敏黑名单</div>
-  <div class="screen">
-    <div class="statusbar"><span>9:41</span><span class="icons"><i class="dot"></i><i class="dot"></i><i class="dot"></i></span></div>
+  <!-- 引导页3-过敏 -->
+  <div class="page" id="p-onboard3">
+    <div class="statusbar"><span>9:41</span><span>●●●</span></div>
     <div class="onboard">
-      <div class="stepbar"><i class="on"></i><i class="on"></i><i class="cur"></i></div>
+      <div class="stepbar"><i class="on"></i><i class="on"></i><i class="on"></i></div>
       <h2>有过敏的食材吗？</h2>
-      <p class="lead">选中后，含该食材的餐点会标红并给出替换建议</p>
-      <div class="tag-row">
-        <span class="tag on">蛋白</span>
-        <span class="tag">牛奶</span>
-        <span class="tag on">坚果</span>
-        <span class="tag">小麦</span>
-        <span class="tag">大豆</span>
-        <span class="tag">鱼虾</span>
-        <span class="tag">花生</span>
-        <span class="tag">芒果</span>
+      <p class="lead">选中后，含该食材的餐点会标红并给替换建议</p>
+      <div class="tag-row" id="allergenTags">
+        <span class="tag" onclick="this.classList.toggle('on')">蛋白</span>
+        <span class="tag" onclick="this.classList.toggle('on')">牛奶</span>
+        <span class="tag" onclick="this.classList.toggle('on')">坚果</span>
+        <span class="tag" onclick="this.classList.toggle('on')">小麦</span>
+        <span class="tag" onclick="this.classList.toggle('on')">大豆</span>
+        <span class="tag" onclick="this.classList.toggle('on')">鱼虾</span>
+        <span class="tag" onclick="this.classList.toggle('on')">花生</span>
+        <span class="tag" onclick="this.classList.toggle('on')">芒果</span>
       </div>
-      <div class="note">⚠️ 已选 2 项：蛋白、坚果。鳕鱼/虾/猪肝不在黑名单，可正常安排。</div>
-      <div style="margin-top:40px">
-        <button class="btn btn-orange">完成，开始使用</button>
+      <div style="margin-top:30px">
+        <button class="btn btn-orange" onclick="go('home')">完成，开始使用</button>
       </div>
     </div>
   </div>
-</div>
 
-<!-- 4. 今日工作台 -->
-<div class="phone">
-  <div class="label">④ 今日工作台（首页）</div>
-  <div class="screen">
-    <div class="statusbar"><span>9:41</span><span class="icons"><i class="dot"></i><i class="dot"></i><i class="dot"></i></span></div>
+  <!-- 首页-今日工作台 -->
+  <div class="page" id="p-home">
+    <div class="statusbar"><span>9:41</span><span>●●●</span></div>
     <div class="hero">
       <h1>今天给汐汐做什么呀～</h1>
-      <div class="sub">7月30日 周三</div>
-      <div class="meta"><span class="pill">套餐B · 营养进阶</span><span class="pill o">Day 3 / 7</span></div>
+      <div class="sub">7月31日 周四</div>
+      <div class="meta"><span class="pill">套餐B · 营养进阶</span><span class="pill o">Day 4 / 7</span></div>
     </div>
     <div class="content">
       <div class="section-t"><span>今日餐点</span><span style="font-size:11px;color:var(--brown-2)">2 餐待办</span></div>
-
-      <div class="meal-card">
-        <div class="meal-head">
-          <div>
-            <div class="meal-name">胡萝卜猪肉软饭 🍚</div>
-            <div class="meal-sub">主食·软饭 ｜ 约 25 分钟</div>
-          </div>
-          <span class="badge pend">待做</span>
-        </div>
-        <div class="ing-row">
-          <span class="ing">🥕 胡萝卜</span><span class="ing">🥩 猪肉</span><span class="ing">🍚 软饭</span><span class="ing">🫒 核桃油</span>
-        </div>
-        <button class="status-btn pend">开始制作 →</button>
+      <div class="meal-card" onclick="go('detail')">
+        <div class="meal-head"><div><div class="meal-name">虾仁时蔬面 🦐</div><div class="meal-sub">主食·面 ｜ 约 20 分钟</div></div><span class="badge pend">待做</span></div>
+        <div class="ing-row"><span class="ing">🦐 鲜虾仁</span><span class="ing">🥕 胡萝卜</span><span class="ing">🥦 西兰花</span><span class="ing">🍜 碎面</span></div>
+        <button class="status-btn pend" onclick="event.stopPropagation();go('cook')">开始制作 →</button>
       </div>
-
-      <div class="meal-card fruit">
-        <div class="meal-head">
-          <div>
-            <div class="meal-name">苹果泥 🍎</div>
-            <div class="meal-sub">水果加餐 ｜ 1 分钟</div>
-          </div>
-          <span class="badge done">已打卡 ✓</span>
-        </div>
-        <div class="ing-row"><span class="ing">🍎 苹果 1/4 个</span></div>
-        <button class="status-btn done">已吃完，记录评分 ✓</button>
+      <div class="meal-card fruit" onclick="doneFruit()">
+        <div class="meal-head"><div><div class="meal-name">牛油果泥 🥑</div><div class="meal-sub">水果加餐 ｜ 1 分钟</div></div><span class="badge pend" id="fruitBadge">待做</span></div>
+        <div class="ing-row"><span class="ing">🥑 牛油果 1/4个</span></div>
+        <button class="status-btn pend" id="fruitBtn" onclick="event.stopPropagation();doneFruit()">一键打卡 →</button>
       </div>
-
       <div class="section-t"><span>快捷操作</span></div>
       <div style="display:flex;gap:8px">
-        <div class="card" style="flex:1;text-align:center;padding:14px 8px;font-size:12px">🔄<br>切换套餐</div>
-        <div class="card" style="flex:1;text-align:center;padding:14px 8px;font-size:12px">📅<br>本周食谱</div>
-        <div class="card" style="flex:1;text-align:center;padding:14px 8px;font-size:12px">➕<br>临时加餐</div>
+        <div class="card" style="flex:1;text-align:center;padding:14px 8px;font-size:12px;cursor:pointer" onclick="go('recipe')">🔄<br>切换套餐</div>
+        <div class="card" style="flex:1;text-align:center;padding:14px 8px;font-size:12px;cursor:pointer" onclick="go('recipe')">📅<br>本周食谱</div>
+        <div class="card" style="flex:1;text-align:center;padding:14px 8px;font-size:12px;cursor:pointer" onclick="go('foods')">➕<br>临时加餐</div>
       </div>
-
-      <div class="tip">💡 今天还没吃鳕鱼，本周还剩 1 次鳕鱼配额（Day 6）</div>
+      <div class="tip">💡 今天吃虾！本周虾配额还剩 1 次（Day 7）</div>
     </div>
     <div class="tabbar">
       <div class="tab active"><div class="ico">🏠</div>今日</div>
-      <div class="tab"><div class="ico">📖</div>食谱</div>
-      <div class="tab"><div class="ico">📝</div>记录</div>
-      <div class="tab"><div class="ico">👤</div>我的</div>
+      <div class="tab" onclick="go('recipe')"><div class="ico">📖</div>食谱</div>
+      <div class="tab" onclick="go('record')"><div class="ico">📝</div>记录</div>
+      <div class="tab" onclick="go('mine')"><div class="ico">👤</div>我的</div>
     </div>
   </div>
-</div>
 
-<!-- 5. 餐点详情 -->
-<div class="phone">
-  <div class="label">⑤ 餐点详情</div>
-  <div class="screen">
-    <div class="statusbar"><span>9:41</span><span class="icons"><i class="dot"></i><i class="dot"></i><i class="dot"></i></span></div>
-    <span class="nav-back">‹</span>
-    <div class="page-head" style="text-align:center;padding-top:44px">餐点详情</div>
-    <div style="height:120px;background:linear-gradient(135deg,var(--orange),var(--green));margin:0 18px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:52px">🍲</div>
+  <!-- 餐点详情 -->
+  <div class="page" id="p-detail">
+    <div class="statusbar"><span>9:41</span><span>●●●</span></div>
+    <span class="nav-back" onclick="go('home')">‹</span>
+    <div class="page-head" style="padding-top:44px">餐点详情</div>
+    <div style="height:110px;background:linear-gradient(135deg,var(--orange),var(--green));margin:0 18px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:48px">🍜</div>
     <div class="content" style="padding-top:14px">
       <div style="display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <div style="font-size:18px;font-weight:700">胡萝卜猪肉软饭</div>
-          <div style="font-size:12px;color:var(--brown-2);margin-top:3px">套餐B · Day3 · 早辅主餐</div>
-        </div>
-        <span class="pill o">主食·软饭</span>
+        <div><div style="font-size:18px;font-weight:700">虾仁时蔬面</div><div style="font-size:12px;color:var(--brown-2)">套餐B · Day4 · 早辅主餐</div></div>
+        <span class="pill o">主食·面</span>
       </div>
-
-      <div class="section-t"><span>食材清单</span><span style="font-size:10px;color:var(--brown-2)">2 人份</span></div>
+      <div class="section-t"><span>食材清单</span></div>
       <div class="card" style="padding:4px 14px">
-        <div class="ing-list"><span>🥕 胡萝卜</span><span class="amt">20 g</span></div>
-        <div class="ing-list"><span>🥩 猪里脊</span><span class="amt">25 g</span></div>
-        <div class="ing-list"><span>🍚 软米饭</span><span class="amt">40 g</span></div>
-        <div class="ing-list"><span>🫒 核桃油</span><span class="amt">3 g</span></div>
+        <div class="ing-list"><span>🦐 鲜虾仁</span><span class="amt">25 g</span></div>
+        <div class="ing-list"><span>🍜 宝宝碎面</span><span class="amt">25 g</span></div>
+        <div class="ing-list"><span>🥕 胡萝卜</span><span class="amt">15 g</span></div>
+        <div class="ing-list"><span>🥦 西兰花</span><span class="amt">15 g</span></div>
+        <div class="ing-list"><span>🫒 核桃油</span><span class="amt">2 g</span></div>
       </div>
-
       <div class="section-t"><span>制作步骤</span><span class="pill">6 步</span></div>
-      <div class="card">
-        <ol class="steps">
-          <li>胡萝卜去皮切小丁，蒸 8 分钟至软烂。</li>
-          <li>猪里脊剁成细茸，用温水漂去血水。</li>
-          <li>软饭提前煮好，比平时多加水，偏软。</li>
-          <li>锅中加少许核桃油，下肉茸炒散变色。</li>
-          <li>加入胡萝卜丁与软饭拌匀，加少量水焖 2 分钟。</li>
-          <li>收汁至软烂，晾至温热即可喂食。</li>
-        </ol>
-      </div>
-
-      <div class="section-t"><span>营养小贴士</span></div>
-      <div class="tip">🥕 胡萝卜富含 β-胡萝卜素，搭配核桃油促进脂溶性维生素吸收；猪肉补铁补蛋白。</div>
-
-      <button class="btn btn-orange" style="margin-top:6px">开始制作 · 跟随模式</button>
+      <div class="card"><ol class="steps">
+        <li>胡萝卜切小丁，西兰花剪小朵，分别焯水1分钟。</li>
+        <li>鲜虾去壳去虾线，加姜片焯水2分钟变色，剁碎。</li>
+        <li>锅中加150ml水烧开，下碎面煮3分钟。</li>
+        <li>加入胡萝卜丁、西兰花碎、虾仁碎。</li>
+        <li>继续煮2分钟至面条软烂、汤汁收浓。</li>
+        <li>盛出滴核桃油，晾温喂食。</li>
+      </ol></div>
+      <div class="tip">🦐 虾富含优质蛋白和锌，搭配西兰花维生素C促进铁吸收。</div>
+      <button class="btn btn-orange" style="margin-top:6px" onclick="go('cook')">开始制作 · 跟随模式</button>
     </div>
   </div>
-</div>
 
-<!-- 6. 食谱 Tab -->
-<div class="phone">
-  <div class="label">⑥ 食谱（三套周食谱）</div>
-  <div class="screen">
-    <div class="statusbar"><span>9:41</span><span class="icons"><i class="dot"></i><i class="dot"></i><i class="dot"></i></span></div>
+  <!-- 制作模式 -->
+  <div class="page" id="p-cook">
+    <div style="background:linear-gradient(180deg,var(--green),var(--cream));padding:12px 18px 10px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:14px;cursor:pointer" onclick="go('detail')">‹ 返回</span>
+        <span style="font-size:12px;color:var(--brown-2);cursor:pointer" onclick="go('home')">退出</span>
+      </div>
+      <div style="text-align:center;font-size:16px;font-weight:700;margin:4px 0 10px">虾仁时蔬面</div>
+      <div style="text-align:center;font-size:22px;font-weight:700;color:#3a6a2a">步骤 <span id="stepNum">1</span> / 6</div>
+      <div class="progress"><div class="bar" id="stepBar" style="width:0%"></div></div>
+    </div>
+    <div style="padding:0 18px">
+      <div class="card" style="padding:24px;text-align:center;border-radius:24px;min-height:200px">
+        <div style="width:38px;height:38px;border-radius:50%;background:var(--green);display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#3a6a2a;margin-bottom:12px" id="stepCircle">1</div>
+        <div style="font-size:18px;font-weight:700;line-height:1.5;margin-bottom:14px" id="stepText">胡萝卜去皮切小丁，<br>焯水 1 分钟。</div>
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap" id="stepTags">
+          <span class="ing">🥕 胡萝卜</span><span class="ing">💧 焯水</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:14px">
+        <button class="btn btn-outline" style="flex:1" onclick="prevStep()" id="prevBtn" disabled>上一步</button>
+        <button class="btn btn-primary" style="flex:1" onclick="nextStep()" id="nextBtn">下一步 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 食谱页 -->
+  <div class="page" id="p-recipe">
+    <div class="statusbar"><span>9:41</span><span>●●●</span></div>
     <div class="page-head">周食谱</div>
     <div class="content">
       <div class="seg">
@@ -314,459 +295,226 @@ h2.page-title{font-size:18px;font-weight:700;padding:6px 0 14px}
         <div class="s on">B 营养进阶</div>
         <div class="s">C 丰富探索</div>
       </div>
-      <div style="font-size:11px;color:var(--brown-2);margin-bottom:8px">套餐B · 营养进阶款 ｜ 饭面为主，颗粒感，蛋白丰富</div>
-
+      <div style="font-size:11px;color:var(--brown-2);margin-bottom:8px">套餐B · 营养进阶款 ｜ 饭面为主</div>
       <div class="day-strip">
-        <div class="day-cell"><span>一</span><span class="d">1</span><span class="pt"></span></div>
-        <div class="day-cell"><span>二</span><span class="d">2</span><span class="pt"></span></div>
-        <div class="day-cell cur"><span>三</span><span class="d">3</span><span class="pt"></span></div>
-        <div class="day-cell"><span>四</span><span class="d">4</span></div>
-        <div class="day-cell"><span>五</span><span class="d">5</span><span class="pt"></span></div>
-        <div class="day-cell"><span>六</span><span class="d">6</span><span class="pt"></span></div>
+        <div class="day-cell"><span>一</span><span class="d">1</span></div>
+        <div class="day-cell"><span>二</span><span class="d">2</span></div>
+        <div class="day-cell"><span>三</span><span class="d">3</span></div>
+        <div class="day-cell cur"><span>四</span><span class="d">4</span></div>
+        <div class="day-cell"><span>五</span><span class="d">5</span></div>
+        <div class="day-cell"><span>六</span><span class="d">6</span></div>
         <div class="day-cell"><span>日</span><span class="d">7</span></div>
       </div>
-
-      <div class="section-t"><span>Day 3 · 周三</span></div>
-      <div class="meal-card">
-        <div class="meal-head"><div><div class="meal-name">胡萝卜猪肉软饭 🍚</div><div class="meal-sub">主食·软饭</div></div><span class="badge pend">早辅</span></div>
-        <div class="ing-row"><span class="ing">🥕胡萝卜</span><span class="ing">🥩猪肉</span><span class="ing">🍚软饭</span></div>
-      </div>
-      <div class="meal-card fruit">
-        <div class="meal-head"><div><div class="meal-name">苹果泥 🍎</div><div class="meal-sub">水果加餐</div></div><span class="badge done">加餐</span></div>
-        <div class="ing-row"><span class="ing">🍎苹果</span></div>
-      </div>
-
+      <div class="section-t"><span>Day 4 · 周四</span></div>
+      <div class="meal-card" onclick="go('detail')"><div class="meal-head"><div><div class="meal-name">虾仁时蔬面 🦐</div><div class="meal-sub">主食·面</div></div><span class="badge pend">早辅</span></div><div class="ing-row"><span class="ing">🦐虾仁</span><span class="ing">🥕胡萝卜</span><span class="ing">🥦西兰花</span></div></div>
+      <div class="meal-card fruit"><div class="meal-head"><div><div class="meal-name">牛油果泥 🥑</div><div class="meal-sub">水果加餐</div></div><span class="badge pend">加餐</span></div><div class="ing-row"><span class="ing">🥑牛油果</span></div></div>
       <div class="section-t"><span>本周营养配额</span></div>
       <div class="card">
-        <div style="font-size:12px;display:flex;justify-content:space-between;padding:6px 0"><span>🐟 鳕鱼</span><span style="color:var(--brown-2)">2 / 2 次 ✓</span></div>
-        <div style="font-size:12px;display:flex;justify-content:space-between;padding:6px 0"><span>🦐 虾</span><span style="color:var(--brown-2)">2 / 2 次 ✓</span></div>
-        <div style="font-size:12px;display:flex;justify-content:space-between;padding:6px 0"><span>🥬 猪肝菠菜</span><span style="color:var(--brown-2)">1 / 1 次 ✓</span></div>
-        <div style="font-size:12px;display:flex;justify-content:space-between;padding:6px 0"><span>🍚 主食覆盖</span><span style="color:#3a6a2a">粥饭面饼 ✓</span></div>
+        <div style="font-size:12px;display:flex;justify-content:space-between;padding:6px 0"><span>🐟 鳕鱼</span><span style="color:var(--brown-2)">2 / 2 ✓</span></div>
+        <div style="font-size:12px;display:flex;justify-content:space-between;padding:6px 0"><span>🦐 虾</span><span style="color:var(--brown-2)">1 / 2</span></div>
+        <div style="font-size:12px;display:flex;justify-content:space-between;padding:6px 0"><span>🥬 猪肝菠菜</span><span style="color:var(--brown-2)">0 / 1</span></div>
       </div>
-      <div class="note">🔁 7 天后自动循环回 Day 1，可随时切换套餐</div>
     </div>
     <div class="tabbar">
-      <div class="tab"><div class="ico">🏠</div>今日</div>
+      <div class="tab" onclick="go('home')"><div class="ico">🏠</div>今日</div>
       <div class="tab active"><div class="ico">📖</div>食谱</div>
-      <div class="tab"><div class="ico">📝</div>记录</div>
-      <div class="tab"><div class="ico">👤</div>我的</div>
+      <div class="tab" onclick="go('record')"><div class="ico">📝</div>记录</div>
+      <div class="tab" onclick="go('mine')"><div class="ico">👤</div>我的</div>
     </div>
   </div>
-</div>
 
-<!-- 7. 记录 Tab -->
-<div class="phone">
-  <div class="label">⑦ 记录（日历+复盘）</div>
-  <div class="screen">
-    <div class="statusbar"><span>9:41</span><span class="icons"><i class="dot"></i><i class="dot"></i><i class="dot"></i></span></div>
+  <!-- 记录页 -->
+  <div class="page" id="p-record">
+    <div class="statusbar"><span>9:41</span><span>●●●</span></div>
     <div class="page-head">进食记录</div>
     <div class="content">
       <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-          <span style="font-weight:600;font-size:14px">2026 年 7 月</span>
-          <span style="font-size:12px;color:var(--brown-2)">‹  ›</span>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center;font-size:10px;color:var(--brown-2);margin-bottom:4px">
-          <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
-        </div>
-        <div class="cal-grid">
-          <div class="cal-cell none">28</div><div class="cal-cell none">29</div>
-          <div class="cal-cell full">30</div><div class="cal-cell full">1</div><div class="cal-cell half">2</div>
-          <div class="cal-cell full">3</div><div class="cal-cell full">4</div>
-          <div class="cal-cell full">5</div><div class="cal-cell none">6</div><div class="cal-cell full">7</div>
-          <div class="cal-cell half">8</div><div class="cal-cell full">9</div><div class="cal-cell full">10</div>
-          <div class="cal-cell full">11</div><div class="cal-cell full">12</div><div class="cal-cell none">13</div>
-          <div class="cal-cell full">14</div><div class="cal-cell full">15</div><div class="cal-cell full">16</div>
-          <div class="cal-cell none">17</div><div class="cal-cell full">18</div><div class="cal-cell full">19</div>
-          <div class="cal-cell full">20</div><div class="cal-cell full">21</div><div class="cal-cell full">22</div>
-          <div class="cal-cell none">23</div><div class="cal-cell full">24</div><div class="cal-cell full">25</div>
-          <div class="cal-cell full">26</div><div class="cal-cell full">27</div><div class="cal-cell full">28</div>
-          <div class="cal-cell full">29</div><div class="cal-cell full">30</div><div class="cal-cell none">31</div>
-        </div>
-        <div style="display:flex;gap:10px;margin-top:10px;font-size:10px;color:var(--brown-2)">
-          <span>● 全打卡</span><span style="color:var(--orange-d)">● 部分</span><span>○ 未做</span>
-        </div>
+        <div style="font-weight:600;font-size:14px;margin-bottom:6px">2026 年 7 月</div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center;font-size:10px;color:var(--brown-2);margin-bottom:4px"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div style="display:flex;gap:10px;margin-top:10px;font-size:10px;color:var(--brown-2)"><span>● 全打卡</span><span style="color:var(--orange-d)">● 部分</span><span>○ 未做</span></div>
       </div>
-
-      <div class="section-t"><span>7月30日 周三 · 今日记录</span></div>
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <span style="font-size:13px">胡萝卜猪肉软饭</span>
-          <span style="color:#f5a623">⭐⭐⭐⭐</span>
-        </div>
-        <div style="font-size:11px;color:var(--brown-2);margin-top:4px">08:30 完成 · 吃得很好</div>
-      </div>
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <span style="font-size:13px">苹果泥</span>
-          <span style="color:#f5a623">⭐⭐⭐⭐⭐</span>
-        </div>
-        <div style="font-size:11px;color:var(--brown-2);margin-top:4px">10:00 完成</div>
-      </div>
-      <div class="card">
-        <div style="font-size:12px;color:var(--brown-2);margin-bottom:8px">今日观察</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <span class="pill">便便·正常</span><span class="pill o">过敏·无</span>
-        </div>
-      </div>
-
-      <button class="btn btn-primary" style="margin-top:4px">查看本周复盘 →</button>
+      <div class="section-t"><span>7月31日 · 今日记录</span></div>
+      <div class="card"><div style="display:flex;justify-content:space-between"><span style="font-size:13px">虾仁时蔬面</span><span>待完成</span></div></div>
+      <div class="card"><div style="display:flex;justify-content:space-between"><span style="font-size:13px">牛油果泥</span><span id="recFruit">待完成</span></div></div>
+      <button class="btn btn-primary" style="margin-top:4px" onclick="go('review')">查看本周复盘 →</button>
     </div>
     <div class="tabbar">
-      <div class="tab"><div class="ico">🏠</div>今日</div>
-      <div class="tab"><div class="ico">📖</div>食谱</div>
+      <div class="tab" onclick="go('home')"><div class="ico">🏠</div>今日</div>
+      <div class="tab" onclick="go('recipe')"><div class="ico">📖</div>食谱</div>
       <div class="tab active"><div class="ico">📝</div>记录</div>
-      <div class="tab"><div class="ico">👤</div>我的</div>
+      <div class="tab" onclick="go('mine')"><div class="ico">👤</div>我的</div>
     </div>
   </div>
-</div>
 
-<!-- 8. 制作模式（烹饪跟随） -->
-<div class="phone">
-  <div class="label">⑧ 制作模式（烹饪跟随）</div>
-  <div class="screen">
-    <div style="background:linear-gradient(180deg,var(--green),var(--cream));padding:12px 18px 10px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-        <span style="font-size:14px;cursor:pointer">‹ 返回</span>
-        <span style="font-size:12px;color:var(--brown-2)">退出</span>
-      </div>
-      <div style="text-align:center;font-size:16px;font-weight:700;margin:4px 0 10px">胡萝卜猪肉软饭</div>
-      <div style="text-align:center;font-size:22px;font-weight:700;color:#3a6a2a">步骤 2 / 6</div>
-      <div class="progress" style="margin-top:8px"><div class="bar" style="width:33%"></div></div>
-    </div>
-    <div style="padding:0 18px;margin-top:-6px">
-      <!-- 步骤卡片 -->
-      <div class="card" style="padding:24px;text-align:center;border-radius:24px">
-        <div style="width:38px;height:38px;border-radius:50%;background:var(--green);display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#3a6a2a;margin-bottom:12px">2</div>
-        <div style="font-size:18px;font-weight:700;line-height:1.5;margin-bottom:14px">
-          猪里脊剁成细茸，<br>用温水漂去血水。
-        </div>
-        <div style="display:flex;gap:8px;justify-content:center;margin-bottom:10px">
-          <span class="ing">🥩 猪里脊 25g</span><span class="ing">💧 温水</span><span class="ing">🔪 菜刀+砧板</span>
-        </div>
-        <div style="font-size:11px;color:var(--brown-2)">无需计时，完成即可进入下一步</div>
-      </div>
-
-      <!-- 步骤缩略图导航 -->
-      <div style="display:flex;gap:6px;justify-content:center;margin:14px 0">
-        <div style="width:28px;height:28px;border-radius:50%;background:var(--green-d);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700">✓</div>
-        <div style="width:28px;height:28px;border-radius:50%;background:var(--green);color:#3a6a2a;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;box-shadow:0 0 0 3px var(--green-d)">2</div>
-        <div style="width:28px;height:28px;border-radius:50%;background:#eee;color:#aaa;display:flex;align-items:center;justify-content:center;font-size:11px">3</div>
-        <div style="width:28px;height:28px;border-radius:50%;background:#eee;color:#aaa;display:flex;align-items:center;justify-content:center;font-size:11px">4</div>
-        <div style="width:28px;height:28px;border-radius:50%;background:#eee;color:#aaa;display:flex;align-items:center;justify-content:center;font-size:11px">5</div>
-        <div style="width:28px;height:28px;border-radius:50%;background:#eee;color:#aaa;display:flex;align-items:center;justify-content:center;font-size:11px">6</div>
-      </div>
-
-      <!-- 底部按钮 -->
-      <div style="display:flex;gap:10px;margin-top:6px">
-        <button style="flex:1;padding:14px;border-radius:14px;border:1.5px solid var(--green-d);background:transparent;color:var(--brown);font-size:14px;font-weight:600;cursor:pointer">上一步</button>
-        <button style="flex:1;padding:14px;border-radius:14px;border:none;background:var(--green-d);color:#fff;font-size:14px;font-weight:600;cursor:pointer">下一步 →</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 8b. 计时器弹窗 -->
-<div class="phone">
-  <div class="label">⑧b 计时器</div>
-  <div class="screen">
-    <div style="background:rgba(0,0,0,.3);position:absolute;inset:0;z-index:10;display:flex;align-items:center;justify-content:center">
-      <div style="background:#fff;border-radius:24px;padding:28px 36px;text-align:center;width:240px;box-shadow:0 20px 40px rgba(0,0,0,.2)">
-        <div style="font-size:13px;color:var(--brown-2);margin-bottom:8px">⏱️ 蒸胡萝卜</div>
-        <div style="width:100px;height:100px;border-radius:50%;background:conic-gradient(var(--green-d) 0 50%,#eee 50% 100%);display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
-          <div style="width:72px;height:72px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;color:var(--brown)">4:00</div>
-        </div>
-        <div style="font-size:11px;color:var(--brown-2);margin-bottom:16px">还剩 4 分钟 · 记得翻面</div>
-        <button style="width:100%;padding:12px;border-radius:14px;border:none;background:var(--green-d);color:#fff;font-size:13px;font-weight:600;cursor:pointer">关闭计时器</button>
-      </div>
-    </div>
-    <!-- 背景：步骤卡片半透明 -->
-    <div style="background:linear-gradient(180deg,var(--green),var(--cream));padding:12px 18px 10px;opacity:.3">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:14px">‹ 返回</span><span style="font-size:12px">退出</span></div>
-      <div style="text-align:center;font-size:16px;font-weight:700;margin:4px 0 10px">鳕鱼胡萝卜粥</div>
-      <div style="text-align:center;font-size:22px;font-weight:700;color:#3a6a2a">步骤 2 / 6</div>
-      <div class="progress" style="margin-top:8px"><div class="bar" style="width:33%"></div></div>
-    </div>
-    <div style="padding:0 18px;margin-top:-6px;opacity:.3">
-      <div class="card" style="padding:24px;text-align:center;border-radius:24px">
-        <div style="width:38px;height:38px;border-radius:50%;background:var(--green);display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#3a6a2a;margin-bottom:12px">2</div>
-        <div style="font-size:18px;font-weight:700;line-height:1.5;margin-bottom:14px">胡萝卜去皮切小丁，<br>蒸 8 分钟至软烂。</div>
-        <div style="display:flex;gap:8px;justify-content:center;margin-bottom:10px"><span class="ing">🥕 胡萝卜 20g</span><span class="ing">⏱️ 蒸 8 分钟</span></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 8c. 打卡确认弹窗 -->
-<div class="phone">
-  <div class="label">⑧c 打卡确认</div>
-  <div class="screen">
-    <div style="background:rgba(0,0,0,.3);position:absolute;inset:0;z-index:10;display:flex;align-items:center;justify-content:center">
-      <div style="background:#fff;border-radius:24px;padding:24px 28px;text-align:center;width:280px;box-shadow:0 20px 40px rgba(0,0,0,.2)">
-        <div style="font-size:48px;margin-bottom:6px">✅</div>
-        <div style="font-size:18px;font-weight:700;margin-bottom:4px">太棒了！</div>
-        <div style="font-size:13px;color:var(--brown-2);margin-bottom:16px">汐汐又吃完一餐 🎉</div>
-        <div style="font-size:12px;color:var(--brown-2);margin-bottom:8px">汐汐喜欢吗？</div>
-        <div style="display:flex;gap:6px;justify-content:center;font-size:30px;margin-bottom:16px;cursor:pointer">
-          <span style="opacity:.4">😋</span><span style="opacity:.4">😋</span><span style="opacity:.4">😋</span><span style="opacity:.4">😋</span><span style="opacity:.4">😋</span>
-        </div>
-        <input placeholder="备注（可选）" class="input" style="margin-bottom:14px;font-size:12px;text-align:center">
-        <button style="width:100%;padding:13px;border-radius:14px;border:none;background:var(--orange-d);color:#fff;font-size:14px;font-weight:600;cursor:pointer">完成</button>
-      </div>
-    </div>
-    <!-- 背景：完成后的步骤页 -->
-    <div style="background:linear-gradient(180deg,var(--green),var(--cream));padding:12px 18px 10px;opacity:.3">
-      <div style="text-align:center;font-size:16px;font-weight:700;margin:4px 0 10px">胡萝卜猪肉软饭</div>
-      <div style="text-align:center;font-size:22px;font-weight:700;color:#3a6a2a">全部完成 ✓</div>
-    </div>
-    <div style="padding:0 18px;margin-top:-6px;opacity:.3">
-      <div class="card" style="padding:24px;text-align:center;border-radius:24px">
-        <div style="font-size:48px;margin-bottom:8px">🎉</div>
-        <div style="font-size:16px;font-weight:700">全部 6 步完成！</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 9. 周复盘 -->
-<div class="phone">
-  <div class="label">⑨ 周复盘报告</div>
-  <div class="screen">
-    <div class="statusbar"><span>9:41</span><span class="icons"><i class="dot"></i><i class="dot"></i><i class="dot"></i></span></div>
-    <span class="nav-back">‹</span>
+  <!-- 周复盘 -->
+  <div class="page" id="p-review">
+    <div class="statusbar"><span>9:41</span><span>●●●</span></div>
+    <span class="nav-back" onclick="go('record')">‹</span>
     <div class="page-head" style="padding-top:44px">本周复盘</div>
     <div class="content">
       <div class="card" style="text-align:center">
         <div class="stat-ring"><div class="in"><b>86%</b><span>打卡率</span></div></div>
         <div style="font-size:12px;color:var(--brown-2);margin-top:8px">本周 12 / 14 餐已完成</div>
       </div>
-
       <div class="section-t"><span>营养配额完成</span></div>
       <div class="card">
-        <div style="font-size:13px;margin-bottom:4px">🐟 鳕鱼</div>
-        <div class="progress"><div class="bar" style="width:100%"></div></div>
-        <div style="font-size:11px;color:var(--brown-2)">2/2 次 ✓</div>
-        <div style="font-size:13px;margin:10px 0 4px">🦐 虾</div>
-        <div class="progress"><div class="bar" style="width:100%"></div></div>
-        <div style="font-size:11px;color:var(--brown-2)">2/2 次 ✓</div>
-        <div style="font-size:13px;margin:10px 0 4px">🥬 猪肝菠菜</div>
-        <div class="progress"><div class="bar" style="width:100%;background:var(--orange-d)"></div></div>
-        <div style="font-size:11px;color:var(--brown-2)">1/1 次 ✓</div>
+        <div style="font-size:13px;margin-bottom:4px">🐟 鳕鱼</div><div class="progress"><div class="bar" style="width:100%"></div></div><div style="font-size:11px;color:var(--brown-2)">2/2 ✓</div>
+        <div style="font-size:13px;margin:10px 0 4px">🦐 虾</div><div class="progress"><div class="bar" style="width:50%"></div></div><div style="font-size:11px;color:var(--brown-2)">1/2</div>
+        <div style="font-size:13px;margin:10px 0 4px">🥬 猪肝菠菜</div><div class="progress"><div class="bar" style="width:0%"></div></div><div style="font-size:11px;color:var(--brown-2)">0/1</div>
       </div>
-
-      <div class="section-t"><span>过敏观察</span></div>
       <div class="tip">✅ 本周无异常过敏反应，便便均正常。</div>
-
       <div class="section-t"><span>下周建议</span></div>
-      <div class="card">
-        <div style="font-size:13px;line-height:1.7">
-          • 打卡率良好，继续保持每日两餐节奏<br>
-          • 下周可尝试套餐C「丰富探索」锻炼自主进食<br>
-          • 汐汐已 10 月龄，可逐步增加软饭颗粒度
-        </div>
-      </div>
+      <div class="card"><div style="font-size:13px;line-height:1.7">• 打卡率良好，继续保持<br>• 可尝试套餐C锻炼自主进食<br>• 汐汐已10月龄，可增加颗粒度</div></div>
     </div>
   </div>
-</div>
 
-<!-- 10. 我的 -->
-<div class="phone">
-  <div class="label">⑩ 我的</div>
-  <div class="screen">
-    <div class="statusbar"><span>9:41</span><span class="icons"><i class="dot"></i><i class="dot"></i><i class="dot"></i></span></div>
+  <!-- 我的 -->
+  <div class="page" id="p-mine">
+    <div class="statusbar"><span>9:41</span><span>●●●</span></div>
     <div class="page-head">我的</div>
     <div class="content">
       <div class="card" style="display:flex;gap:14px;align-items:center">
         <div style="width:56px;height:56px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:28px">👶</div>
-        <div style="flex:1">
-          <div style="font-size:17px;font-weight:700">汐汐</div>
-          <div style="font-size:12px;color:var(--brown-2)">10 个月 · 套餐B · Day3</div>
-        </div>
+        <div style="flex:1"><div style="font-size:17px;font-weight:700">汐汐</div><div style="font-size:12px;color:var(--brown-2)">10个月 · 套餐B · Day4</div></div>
         <span style="font-size:12px;color:var(--brown-2)">编辑 ›</span>
       </div>
-
-      <div class="kpi">
-        <div class="k"><b>86%</b><span>本周打卡</span></div>
-        <div class="k"><b>42</b><span>累计餐次</span></div>
-        <div class="k"><b>6</b><span>循环周数</span></div>
-      </div>
-
+      <div class="kpi"><div class="k"><b>86%</b><span>本周打卡</span></div><div class="k"><b>42</b><span>累计餐次</span></div><div class="k"><b>6</b><span>循环周数</span></div></div>
       <div class="card" style="padding:0 16px">
-        <div class="list-item"><span>👶 编辑宝宝信息</span><span class="arr">›</span></div>
-        <div class="list-item"><span>⚠️ 过敏黑名单 <span class="pill o" style="margin-left:6px">2</span></span><span class="arr">›</span></div>
+        <div class="list-item" onclick="go('onboard1')"><span>👶 编辑宝宝信息</span><span class="arr">›</span></div>
+        <div class="list-item" onclick="go('onboard3')"><span>⚠️ 过敏黑名单</span><span class="arr">›</span></div>
         <div class="list-item"><span>🔁 循环套餐设置</span><span class="arr">›</span></div>
         <div class="list-item"><span>🔔 每餐提醒时间</span><span class="arr">08:00 ›</span></div>
-        <div class="list-item"><span>📊 打卡数据复盘</span><span class="arr">›</span></div>
+        <div class="list-item" onclick="go('review')"><span>📊 打卡数据复盘</span><span class="arr">›</span></div>
         <div class="list-item"><span>📤 导出记录</span><span class="arr">›</span></div>
-        <div class="list-item"><span>ℹ️ 关于汐汐辅食日记</span><span class="arr">›</span></div>
+        <div class="list-item" onclick="go('foods')"><span>🥣 添加的食物</span><span class="arr">›</span></div>
       </div>
-
-      <div class="note" style="text-align:center">汐汐辅食日记 v1.0 · 宝宝成长小助手</div>
+      <div class="note" style="text-align:center">汐汐辅食日记 v1.0</div>
     </div>
     <div class="tabbar">
-      <div class="tab"><div class="ico">🏠</div>今日</div>
-      <div class="tab"><div class="ico">📖</div>食谱</div>
-      <div class="tab"><div class="ico">📝</div>记录</div>
+      <div class="tab" onclick="go('home')"><div class="ico">🏠</div>今日</div>
+      <div class="tab" onclick="go('recipe')"><div class="ico">📖</div>食谱</div>
+      <div class="tab" onclick="go('record')"><div class="ico">📝</div>记录</div>
       <div class="tab active"><div class="ico">👤</div>我的</div>
     </div>
   </div>
-</div>
 
-<!-- 11. 添加的食物 -->
-<div class="phone">
-  <div class="label">⑪ 添加的食物</div>
-  <div class="screen">
-    <div class="statusbar"><span>9:41</span><span class="icons"><i class="dot"></i><i class="dot"></i><i class="dot"></i></span></div>
-    <div style="padding:42px 18px 10px;text-align:center;position:relative">
-      <span style="position:absolute;left:18px;top:46px;font-size:20px;cursor:pointer">‹</span>
-      <h2 style="font-size:18px;font-weight:700">添加的食物</h2>
-    </div>
+  <!-- 添加的食物 -->
+  <div class="page" id="p-foods">
+    <div class="statusbar"><span>9:41</span><span>●●●</span></div>
+    <span class="nav-back" onclick="go('mine')">‹</span>
+    <div style="padding:42px 18px 10px;text-align:center"><h2 style="font-size:18px;font-weight:700">添加的食物</h2></div>
     <div class="content" style="padding-top:6px">
-      <div style="font-size:12px;color:var(--brown-2);margin:0 4px 10px">
-        可以优先安排这些，让宝宝慢慢尝遍 100 种食物～
+      <div style="font-size:12px;color:var(--brown-2);margin:0 4px 10px">可以优先安排这些，让宝宝慢慢尝遍 100 种食物～</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px" id="foodGrid"></div>
+      <div style="background:#fff;border-radius:16px;padding:14px;margin-top:14px;box-shadow:0 6px 20px rgba(90,74,58,.12)">
+        <div style="font-size:12px;font-weight:600;margin-bottom:8px">已添加 <span id="foodCount">0</span> 种</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap" id="selectedFoods"></div>
       </div>
-
-      <!-- 食物网格 -->
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
-        <div class="food-cell"><span>🥣</span><span>小米粥</span></div>
-        <div class="food-cell"><span>🎃</span><span>南瓜</span></div>
-        <div class="food-cell"><span>🥕</span><span>胡萝卜</span></div>
-        <div class="food-cell"><span>🥔</span><span>土豆</span></div>
-
-        <div class="food-cell"><span>🥑</span><span>牛油果</span></div>
-        <div class="food-cell"><span>🍌</span><span>香蕉</span></div>
-        <div class="food-cell on"><span>🍎</span><span>苹果</span></div>
-        <div class="food-cell"><span>🍐</span><span>梨</span></div>
-
-        <div class="food-cell"><span>🥒</span><span>西葫芦</span></div>
-        <div class="food-cell"><span>🥦</span><span>西兰花</span></div>
-        <div class="food-cell"><span>🫛</span><span>豌豆</span></div>
-        <div class="food-cell"><span>🌽</span><span>玉米</span></div>
-
-        <div class="food-cell"><span>🍠</span><span>红薯</span></div>
-        <div class="food-cell"><span>🥕</span><span>白萝卜</span></div>
-        <div class="food-cell"><span>🥒</span><span>冬瓜</span></div>
-        <div class="food-cell"><span>🥒</span><span>黄瓜</span></div>
-
-        <div class="food-cell"><span>🍆</span><span>茄子</span></div>
-        <div class="food-cell"><span>🧈</span><span>豆腐</span></div>
-        <div class="food-cell"><span>🥣</span><span>燕麦粥</span></div>
-        <div class="food-cell"><span>🍜</span><span>面条</span></div>
-
-        <div class="food-cell"><span>🥯</span><span>馒头小块</span></div>
-        <div class="food-cell"><span>🍚</span><span>米饭软粒</span></div>
-        <div class="food-cell"><span>🫐</span><span>蓝莓</span></div>
-        <div class="food-cell"><span>🍑</span><span>桃子</span></div>
-
-        <div class="food-cell"><span>🫐</span><span>李子</span></div>
-        <div class="food-cell"><span>🍒</span><span>樱桃</span></div>
-        <div class="food-cell"><span>🍇</span><span>葡萄</span></div>
-        <div class="food-cell"><span>🍊</span><span>橙子</span></div>
-
-        <div class="food-cell"><span>🍗</span><span>鸡肉</span></div>
-        <div class="food-cell"><span>🦃</span><span>火鸡肉</span></div>
-        <div class="food-cell"><span>🦆</span><span>鸭肉</span></div>
-        <div class="food-cell"><span>🥩</span><span>牛肉</span></div>
-
-        <div class="food-cell"><span>🥩</span><span>羊肉</span></div>
-        <div class="food-cell on"><span>🥩</span><span>猪肝</span></div>
-        <div class="food-cell"><span>🍗</span><span>鸡肝</span></div>
-        <div class="food-cell"><span>🥚</span><span>鸡蛋黄</span></div>
-
-        <div class="food-cell"><span>🥚</span><span>全蛋</span></div>
-        <div class="food-cell"><span>🧀</span><span>酸奶</span></div>
-        <div class="food-cell"><span>🧀</span><span>奶酪</span></div>
-        <div class="food-cell"><span>🐟</span><span>三文鱼</span></div>
-
-        <div class="food-cell on"><span>🐟</span><span>鳕鱼</span></div>
-        <div class="food-cell"><span>🐟</span><span>比目鱼</span></div>
-        <div class="food-cell"><span>🐟</span><span>带鱼</span></div>
-        <div class="food-cell"><span>🐟</span><span>黄花鱼</span></div>
-
-        <div class="food-cell on"><span>🦐</span><span>虾</span></div>
-        <div class="food-cell"><span>🦀</span><span>蟹</span></div>
-        <div class="food-cell"><span>🦪</span><span>扇贝</span></div>
-        <div class="food-cell"><span>🥜</span><span>花生</span></div>
-
-        <div class="food-cell"><span>🌰</span><span>杏仁</span></div>
-        <div class="food-cell"><span>🌰</span><span>核桃</span></div>
-        <div class="food-cell"><span>🥜</span><span>腰果</span></div>
-        <div class="food-cell"><span>🥜</span><span>开心果</span></div>
-
-        <div class="food-cell"><span>🌰</span><span>榛子</span></div>
-        <div class="food-cell"><span>🥜</span><span>夏威夷果</span></div>
-        <div class="food-cell"><span>🌰</span><span>芝麻</span></div>
-        <div class="food-cell"><span>🌻</span><span>葵花籽酱</span></div>
-
-        <div class="food-cell"><span>🎃</span><span>南瓜籽</span></div>
-        <div class="food-cell"><span>🍓</span><span>草莓</span></div>
-        <div class="food-cell"><span>🥝</span><span>奇异果</span></div>
-        <div class="food-cell"><span>🥭</span><span>芒果</span></div>
-
-        <div class="food-cell"><span>🍍</span><span>菠萝</span></div>
-        <div class="food-cell"><span>🍈</span><span>木瓜</span></div>
-        <div class="food-cell"><span>🐉</span><span>火龙果</span></div>
-        <div class="food-cell"><span>🍈</span><span>哈密瓜</span></div>
-
-        <div class="food-cell"><span>🍉</span><span>西瓜</span></div>
-        <div class="food-cell"><span>🍒</span><span>荔枝</span></div>
-        <div class="food-cell"><span>🍒</span><span>龙眼</span></div>
-        <div class="food-cell"><span>🥦</span><span>花菜</span></div>
-
-        <div class="food-cell"><span>🥬</span><span>卷心菜</span></div>
-        <div class="food-cell"><span>🥬</span><span>大白菜</span></div>
-        <div class="food-cell"><span>🥬</span><span>芹菜</span></div>
-        <div class="food-cell"><span>🥬</span><span>韭菜</span></div>
-
-        <div class="food-cell"><span>🧅</span><span>洋葱</span></div>
-        <div class="food-cell"><span>🧄</span><span>大蒜</span></div>
-        <div class="food-cell"><span>🍄</span><span>蘑菇</span></div>
-        <div class="food-cell"><span>🍄</span><span>木耳</span></div>
-
-        <div class="food-cell"><span>🌊</span><span>海带</span></div>
-        <div class="food-cell"><span>🌊</span><span>紫菜</span></div>
-        <div class="food-cell"><span>🌊</span><span>海苔</span></div>
-        <div class="food-cell"><span>🌾</span><span>藜麦</span></div>
-
-        <div class="food-cell"><span>🌾</span><span>糙米</span></div>
-        <div class="food-cell"><span>🌾</span><span>黑米</span></div>
-        <div class="food-cell"><span>🌾</span><span>薏米</span></div>
-        <div class="food-cell"><span>🫘</span><span>红豆</span></div>
-
-        <div class="food-cell"><span>🫘</span><span>绿豆</span></div>
-        <div class="food-cell"><span>🫘</span><span>黑豆</span></div>
-        <div class="food-cell"><span>🫘</span><span>扁豆</span></div>
-        <div class="food-cell"><span>🫘</span><span>鹰嘴豆</span></div>
-
-        <div class="food-cell"><span>🫛</span><span>毛豆</span></div>
-        <div class="food-cell"><span>🫛</span><span>蚕豆</span></div>
-        <div class="food-cell"><span>🪷</span><span>莲藕</span></div>
-        <div class="food-cell"><span>🍠</span><span>山药</span></div>
-
-        <div class="food-cell"><span>🧅</span><span>芋头</span></div>
-        <div class="food-cell"><span>🍠</span><span>荸荠</span></div>
-        <div class="food-cell"><span>🍠</span><span>菱角</span></div>
-        <div class="food-cell"><span>🌰</span><span>板栗</span></div>
-
-        <div class="food-cell"><span>🌰</span><span>松子</span></div>
-      </div>
-
-      <!-- 已选食物浮层 -->
-      <div style="position:sticky;bottom:70px;margin-top:14px;background:#fff;border-radius:16px;padding:14px;box-shadow:0 6px 20px rgba(90,74,58,.12)">
-        <div style="font-size:12px;font-weight:600;margin-bottom:8px">已添加 4 种</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <span class="pill o">🍎 苹果</span>
-          <span class="pill o">🐟 鳕鱼</span>
-          <span class="pill o">🦐 虾</span>
-          <span class="pill o">🥩 猪肝</span>
-        </div>
-      </div>
-
-      <button class="btn btn-primary" style="margin-top:16px">确认添加</button>
+      <button class="btn btn-primary" style="margin-top:14px" onclick="go('mine')">确认添加</button>
     </div>
   </div>
-</div>
 
 </div>
+
+<script>
+let currentPage = 'splash';
+let cookStep = 1;
+const cookSteps = [
+  {txt:'胡萝卜去皮切小丁，<br>焯水 1 分钟。',tags:['🥕 胡萝卜','💧 焯水']},
+  {txt:'鲜虾去壳去虾线，<br>加姜片焯水 2 分钟至变色，剁碎。',tags:['🦐 鲜虾','🧂 姜片']},
+  {txt:'锅中加 150ml 水烧开，<br>下碎面煮 3 分钟。',tags:['🍜 碎面','💧 150ml']},
+  {txt:'加入胡萝卜丁、<br>西兰花碎、虾仁碎。',tags:['🥕 胡萝卜','🥦 西兰花','🦐 虾仁']},
+  {txt:'继续煮 2 分钟至<br>面条软烂、汤汁收浓。',tags:['⏱️ 2分钟','🔥 小火']},
+  {txt:'盛出滴核桃油，<br>晾温喂食。',tags:['🫒 核桃油','🍽️ 完成']}
+];
+
+function go(page) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const el = document.getElementById('p-'+page);
+  if(el) { el.classList.add('active'); el.scrollTop=0; }
+  currentPage = page;
+  if(page==='cook'){ cookStep=1; updateCook(); }
+  if(page==='foods') renderFoods();
+  if(page==='record') renderCalendar();
+}
+
+function chgMonth(d) {
+  const el = document.getElementById('mVal');
+  let v = parseInt(el.textContent) + d;
+  if(v>=6 && v<=24){ el.textContent=v; }
+}
+
+function doneFruit() {
+  document.getElementById('fruitBadge').textContent='已打卡 ✓';
+  document.getElementById('fruitBadge').className='badge done';
+  document.getElementById('fruitBtn').textContent='已吃完 ✓';
+  document.getElementById('fruitBtn').className='status-btn done';
+  const rf = document.getElementById('recFruit');
+  if(rf) rf.innerHTML='⭐ 已完成';
+}
+
+function updateCook() {
+  document.getElementById('stepNum').textContent = cookStep;
+  document.getElementById('stepBar').style.width = ((cookStep-1)/5*100)+'%';
+  document.getElementById('stepCircle').textContent = cookStep;
+  const s = cookSteps[cookStep-1];
+  document.getElementById('stepText').innerHTML = s.txt;
+  document.getElementById('stepTags').innerHTML = s.tags.map(t=>'<span class="ing">'+t+'</span>').join('');
+  document.getElementById('prevBtn').disabled = cookStep===1;
+  if(cookStep===6){
+    document.getElementById('nextBtn').textContent='完成打卡 🎉';
+  }else{
+    document.getElementById('nextBtn').textContent='下一步 →';
+  }
+}
+
+function prevStep() { if(cookStep>1){ cookStep--; updateCook(); } }
+function nextStep() {
+  if(cookStep<6){ cookStep++; updateCook(); }
+  else { go('home'); }
+}
+
+const foodList = [
+  '🥣 小米粥','🎃 南瓜','🥕 胡萝卜','🥔 土豆','🥑 牛油果','🍌 香蕉','🍎 苹果','🍐 梨',
+  '🥒 西葫芦','🥦 西兰花','🫛 豌豆','🌽 玉米','🍠 红薯','🥒 冬瓜','🥒 黄瓜','🍆 茄子',
+  '🧈 豆腐','🥣 燕麦粥','🍜 面条','🥯 馒头','🍚 米饭','🫐 蓝莓','🍑 桃子','🍒 樱桃',
+  '🍇 葡萄','🍊 橙子','🍗 鸡肉','🦃 火鸡肉','🦆 鸭肉','🥩 牛肉','🥩 羊肉','🥩 猪肝',
+  '🍗 鸡肝','🥚 鸡蛋黄','🥚 全蛋','🧀 酸奶','🧀 奶酪','🐟 三文鱼','🐟 鳕鱼','🐟 带鱼',
+  '🐟 黄花鱼','🦐 虾','🦀 蟹','🦪 扇贝','🥜 花生','🌰 核桃','🥜 腰果','🍓 草莓',
+  '🥝 奇异果','🥭 芒果','🍍 菠萝','🐉 火龙果','🍉 西瓜','🥦 花菜','🥬 菠菜','🥬 大白菜',
+  '🧅 洋葱','🍄 蘑菇','🌊 紫菜','🌊 海苔','🌾 藜麦','🌾 糙米','🫘 红豆','🫘 绿豆',
+  '🍠 山药','🌰 板栗','🍈 木瓜','🍈 哈密瓜','🥬 芹菜','🍄 木耳','🌊 海带','🫘 鹰嘴豆',
+  '🫛 毛豆','🪷 莲藕','🧅 芋头','🌰 松子','🍒 龙眼','🍒 荔枝','🌾 黑米','🥜 开心果'
+];
+
+function renderFoods() {
+  const grid = document.getElementById('foodGrid');
+  grid.innerHTML = foodList.map(f=>{
+    const [emoji,name] = f.split(' ');
+    const sel = Math.random()<0.06;
+    return '<div class="food-cell'+(sel?' on':'')+'" onclick="this.classList.toggle(\'on\');updateFoodCount()"><span>'+emoji+'</span><span>'+name+'</span></div>';
+  }).join('');
+  updateFoodCount();
+}
+
+function updateFoodCount() {
+  const sel = document.querySelectorAll('#p-foods .food-cell.on');
+  document.getElementById('foodCount').textContent = sel.length;
+  document.getElementById('selectedFoods').innerHTML = Array.from(sel).map(s=>{
+    const t = s.textContent;
+    return '<span class="pill o">'+t+'</span>';
+  }).join('');
+}
+
+function renderCalendar() {
+  const g = document.getElementById('calGrid');
+  let h='';
+  const states = ['none','none','full','full','half','full','full','full','none','full','full','half','full','full','full','full','none','full','full','full','full','full','none','full','full','full','full','full','full','full','none'];
+  for(let i=28;i<=31;i++){ h+='<div class="cal-cell '+states[i-28]+'">'+i+'</div>'; }
+  for(let i=1;i<=31;i++){ h+='<div class="cal-cell '+states[i+3]+'">'+i+'</div>'; }
+  g.innerHTML=h;
+}
+</script>
 </body>
 </html>
