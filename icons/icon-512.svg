@@ -1,11 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="112" fill="#FFF9EF"/>
-  <ellipse cx="256" cy="270" rx="150" ry="92" fill="#D8E9D0"/>
-  <ellipse cx="256" cy="270" rx="128" ry="75" fill="#FFF9EF"/>
-  <line x1="345" y1="155" x2="245" y2="270" stroke="#FFE2C5" stroke-width="20" stroke-linecap="round"/>
-  <ellipse cx="368" cy="135" rx="40" ry="28" fill="#FFE2C5" transform="rotate(-25,368,135)"/>
-  <path d="M205 185 Q195 160 205 135" stroke="#B8D4A8" stroke-width="6" fill="none" stroke-linecap="round"/>
-  <path d="M245 178 Q235 153 245 128" stroke="#B8D4A8" stroke-width="6" fill="none" stroke-linecap="round"/>
-  <path d="M285 185 Q275 160 285 135" stroke="#B8D4A8" stroke-width="6" fill="none" stroke-linecap="round"/>
-  <text x="256" y="450" text-anchor="middle" font-size="42" fill="#5A4A3A" font-weight="bold" font-family="sans-serif">汐汐辅食日记</text>
+  <rect width="512" height="512" rx="102" fill="#FFF9EF"/>
+  <ellipse cx="256" cy="262" rx="154" ry="98" fill="#B8D4A8"/>
+  <ellipse cx="256" cy="268" rx="138" ry="82" fill="#D8E9D0"/>
+  <ellipse cx="256" cy="268" rx="120" ry="67" fill="#FFF9EF"/>
+  <line x1="346" y1="142" x2="236" y2="272" stroke="#F5C98E" stroke-width="22" stroke-linecap="round"/>
+  <ellipse cx="373" cy="120" rx="40" ry="28" fill="#FFE2C5" transform="rotate(-28,373,120)"/>
+  <circle cx="214" cy="270" r="17" fill="#F5C98E"/>
+  <circle cx="256" cy="256" r="14" fill="#F5C98E"/>
+  <circle cx="300" cy="272" r="17" fill="#F5C98E"/>
+  <path d="M193 162 Q183 136 193 110" stroke="#8FAE7A" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <path d="M233 154 Q223 128 233 102" stroke="#8FAE7A" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <path d="M273 162 Q263 136 273 110" stroke="#8FAE7A" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <text x="256" y="455" text-anchor="middle" font-size="48" fill="#5A4A3A" font-weight="bold" font-family="sans-serif">汐汐辅食</text>
 </svg>
