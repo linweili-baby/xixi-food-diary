@@ -1,5 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
-  <rect width="180" height="180" rx="36" fill="#FFF6E0"/>
-  <text x="90" y="105" text-anchor="middle" font-size="60">🥣</text>
-  <text x="90" y="155" text-anchor="middle" font-size="18" fill="#5A4A3A" font-weight="bold" font-family="sans-serif">汐汐</text>
+  <rect width="180" height="180" rx="40" fill="#FFF9EF"/>
+  <ellipse cx="90" cy="95" rx="52" ry="32" fill="#D8E9D0"/>
+  <ellipse cx="90" cy="95" rx="45" ry="26" fill="#FFF9EF"/>
+  <line x1="120" y1="55" x2="85" y2="95" stroke="#FFE2C5" stroke-width="7" stroke-linecap="round"/>
+  <ellipse cx="128" cy="48" rx="14" ry="10" fill="#FFE2C5" transform="rotate(-25,128,48)"/>
+  <path d="M72 65 Q68 55 72 45" stroke="#B8D4A8" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M85 62 Q81 52 85 42" stroke="#B8D4A8" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M98 65 Q94 55 98 45" stroke="#B8D4A8" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <text x="90" y="162" text-anchor="middle" font-size="15" fill="#5A4A3A" font-weight="bold" font-family="sans-serif">汐汐辅食日记</text>
 </svg>
